@@ -26,3 +26,9 @@ jobs:
     - name: Push Docker image to DockerHub
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/ci-cd-webapp
+
+- name: Push Docker image to AWS ECR
+  run: |
+    $(aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 913524906043.dkr.ecr.us-east-1.amazonaws.com)
+    docker tag your-image:latest 913524906043.dkr.ecr.us-east-1.amazonaws.com/ci-cd-webapp:latest
+    docker push 913524906043.dkr.ecr.us-east-1.amazonaws.com/ci-cd-webapp:latest
